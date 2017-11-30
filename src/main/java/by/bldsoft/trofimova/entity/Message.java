@@ -7,13 +7,14 @@ import lombok.*;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "message")
+@Table(name = "Message")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = Message.class, property="messageId")
 //@ToString
 @EqualsAndHashCode(of = "messageId")
@@ -22,7 +23,7 @@ public class Message implements java.io.Serializable{
 //    @JsonProperty("message_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "message_id")
+    @Column(name = "messageId")
    // @JsonSerialize(using = ToStringSerializer.class)
     private Long messageId;
 
@@ -35,8 +36,16 @@ public class Message implements java.io.Serializable{
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "userId", insertable = false, updatable = false)
     public User user;
+
+    @ManyToMany
+    @JoinColumn(name = "messageId", insertable = false, updatable = false)
+    public List<TagHome> tagHome;
+
+    @ManyToMany
+    @JoinColumn(name = "messageId", insertable = false, updatable = false)
+    public List<TagWork> tagWork;
 
 }
 

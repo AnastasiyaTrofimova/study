@@ -10,15 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "User")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = User.class, property = "userId")
 //@ToString
 @EqualsAndHashCode(of = "userId")
 public class User implements java.io.Serializable{
 
-//    @JsonProperty("user_id")
+    //@JsonProperty("user_id")
     @Id
-    @Column(name = "user_id")
+    @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
@@ -37,7 +37,8 @@ public class User implements java.io.Serializable{
     @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, orphanRemoval = true/*, cascade = CascadeType.ALL*/)
     public List<Message> messages;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roleId")
     public Role role;
 
 }

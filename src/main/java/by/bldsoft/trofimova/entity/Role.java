@@ -1,11 +1,11 @@
 package by.bldsoft.trofimova.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 @Getter
@@ -13,16 +13,22 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "role")
-public class Role implements java.io.Serializable{
+@Table(name = "Role")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = Role.class, property = "roleId")
+@EqualsAndHashCode(of = "roleId")
+public class Role implements Serializable {
     @Id
-    @Column(name = "role_id")
+    @Column(name = "roleId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  roleId;
+    private Long roleId;
 
     @Column(name = "role")
     private String role;
 
-    @OneToOne
+    @Column(name = "userId")
+    private Long userId;
+
+    @OneToOne(mappedBy = "role")
+    //@JoinColumn(name = "user_id")
     public User user;
 }

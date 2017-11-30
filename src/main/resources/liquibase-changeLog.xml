@@ -1,0 +1,86 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+
+
+        <changeSet id="1" author="Nastya">
+            <sql>
+                create table Role(
+                roleId int(11) AUTO_INCREMENT,
+                role varchar(20) NOT NULL,
+                userId int(11),
+                PRIMARY KEY (roleId));
+            </sql>
+            <comment>This table describe role of users</comment>
+            <rollback>
+                <sql>drop table Role</sql>
+            </rollback>
+        </changeSet>
+
+        <changeSet id="2" author="Nastya">
+            <sql>
+                create table User(
+                userId int(11) AUTO_INCREMENT,
+                name varchar(20),
+                surname varchar(20),
+                phone varchar(20),
+                roleId int(11),
+                PRIMARY KEY (userId),
+                FOREIGN KEY (roleId) REFERENCES Role (roleId));
+            </sql>
+            <comment>This table describe users</comment>
+            <rollback>
+                <sql>drop table User</sql>
+            </rollback>
+        </changeSet>
+
+
+
+        <changeSet id="3" author="Nastya">
+            <sql>
+                create table Message(
+                messageId int(11) AUTO_INCREMENT,
+                userId int(11),
+                description varchar(20),
+                PRIMARY KEY (messageId),
+                FOREIGN KEY (userId) REFERENCES User (userId));
+            </sql>
+            <comment>This table describe message of users</comment>
+            <rollback>
+                <sql>drop table Message</sql>
+            </rollback>
+        </changeSet>
+
+        <changeSet id="4" author="Nastya">
+            <sql>
+                create table TagHome(
+                tagId int(11) AUTO_INCREMENT,
+                tagSimple varchar(20),
+                messageId int(11),
+                PRIMARY KEY (tagId),
+                FOREIGN KEY (messageId) REFERENCES Message (messageId));
+            </sql>
+            <comment>This table describe private message of users</comment>
+            <rollback>
+                <sql>drop table TagHome</sql>
+            </rollback>
+        </changeSet>
+
+        <changeSet id="5" author="Nastya">
+            <sql>
+                create table TagWork(
+                tagId int(11) AUTO_INCREMENT,
+                tagImportant varchar(20),
+                messageId int(11),
+                PRIMARY KEY (tagId),
+                FOREIGN KEY (messageId) REFERENCES Message (messageId));
+            </sql>
+            <comment>This table describe work message of users</comment>
+            <rollback>
+                <sql>drop table TagWork</sql>
+            </rollback>
+        </changeSet>
+
+</databaseChangeLog>
