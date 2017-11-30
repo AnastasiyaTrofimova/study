@@ -16,20 +16,14 @@ import java.util.List;
 @Entity
 @Table(name = "Message")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = Message.class, property="messageId")
-//@ToString
 @EqualsAndHashCode(of = "messageId")
 public class Message implements java.io.Serializable{
 
-//    @JsonProperty("message_id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "messageId")
-   // @JsonSerialize(using = ToStringSerializer.class)
-    private Long messageId;
 
-  /*  @JsonProperty("user_id")
-    @Column(name = "user_id")
-    private Long user_id;*/
+    private Long messageId;
 
     @JsonProperty("description")
     @Column(name = "description")
@@ -39,12 +33,10 @@ public class Message implements java.io.Serializable{
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     public User user;
 
-    @ManyToMany
-    @JoinColumn(name = "messageId", insertable = false, updatable = false)
+    @ManyToMany(mappedBy = "message")
     public List<TagHome> tagHome;
 
-    @ManyToMany
-    @JoinColumn(name = "messageId", insertable = false, updatable = false)
+    @ManyToMany(mappedBy = "message")
     public List<TagWork> tagWork;
 
 }

@@ -24,11 +24,10 @@ import java.util.List;
         @Column(name = "tagSimple")
         private String tagSimple;
 
-        @Column(name = "messageId")
-        private Long messageId;
-
         @ManyToMany(fetch = FetchType.EAGER)
-        @JoinColumn(name = "messageId", insertable = false, updatable = false)
+        @JoinTable(name = "MessageTagHome",
+                joinColumns = @JoinColumn(name = "tagId"),
+                inverseJoinColumns = @JoinColumn(name = "messageId"))
         public List<Message> message;
 
 }

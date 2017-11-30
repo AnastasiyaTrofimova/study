@@ -16,7 +16,6 @@ import java.util.List;
 @EqualsAndHashCode(of = "userId")
 public class User implements java.io.Serializable{
 
-    //@JsonProperty("user_id")
     @Id
     @Column(name = "userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,7 +33,7 @@ public class User implements java.io.Serializable{
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, orphanRemoval = true/*, cascade = CascadeType.ALL*/)
+    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, orphanRemoval = true)
     public List<Message> messages;
 
     @OneToOne(cascade = CascadeType.ALL)

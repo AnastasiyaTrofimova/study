@@ -15,20 +15,19 @@ import java.util.List;
 @Table(name = "TagWork")
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = TagWork.class, property = "tagId")
 @EqualsAndHashCode(of = "tagId")
-public class TagWork implements java.io.Serializable{
-    @Id
-    @Column(name = "tagId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long  tagId;
+    public class TagWork implements java.io.Serializable{
+        @Id
+        @Column(name = "tagId")
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long  tagId;
 
-    @Column(name = "tagImportant")
-    private String tagImportant;
+        @Column(name = "tagImportant")
+        private String tagImportant;
 
-    @Column(name = "messageId")
-    private Long messageId;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "messageId", insertable = false, updatable = false)
-    public List<Message> message;
+        @ManyToMany(fetch = FetchType.EAGER)
+        @JoinTable(name = "MessageTagWork",
+                joinColumns = @JoinColumn(name = "tagId"),
+                inverseJoinColumns = @JoinColumn(name = "messageId"))
+        public List<Message> message;
 
 }

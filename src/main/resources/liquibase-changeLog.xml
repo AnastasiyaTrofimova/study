@@ -6,81 +6,103 @@
 
 
         <changeSet id="1" author="Nastya">
+            <comment>This table describe role of users</comment>
             <sql>
-                create table Role(
-                roleId int(11) AUTO_INCREMENT,
-                role varchar(20) NOT NULL,
-                userId int(11),
+                CREATE TABLE Role(
+                roleId INT(11) AUTO_INCREMENT NOT NULL,
+                role VARCHAR(20) NOT NULL,
+                userId INT(11),
                 PRIMARY KEY (roleId));
             </sql>
-            <comment>This table describe role of users</comment>
             <rollback>
-                <sql>drop table Role</sql>
+                <sql>DROP TABLE Role</sql>
             </rollback>
         </changeSet>
 
         <changeSet id="2" author="Nastya">
-            <sql>
-                create table User(
-                userId int(11) AUTO_INCREMENT,
-                name varchar(20),
-                surname varchar(20),
-                phone varchar(20),
-                roleId int(11),
-                PRIMARY KEY (userId),
-                FOREIGN KEY (roleId) REFERENCES Role (roleId));
-            </sql>
             <comment>This table describe users</comment>
+            <sql>
+                CREATE TABLE User(
+                userId INT(11) AUTO_INCREMENT NOT NULL,
+                name VARCHAR(20),
+                surname VARCHAR(20),
+                phone VARCHAR(20),
+                roleId INT(11),
+                PRIMARY KEY (userId),
+                CONSTRAINT f_roleId FOREIGN KEY (roleId) REFERENCES Role (roleId));
+            </sql>
             <rollback>
-                <sql>drop table User</sql>
+                <sql>DROP TABLE User</sql>
             </rollback>
         </changeSet>
 
-
-
         <changeSet id="3" author="Nastya">
-            <sql>
-                create table Message(
-                messageId int(11) AUTO_INCREMENT,
-                userId int(11),
-                description varchar(20),
-                PRIMARY KEY (messageId),
-                FOREIGN KEY (userId) REFERENCES User (userId));
-            </sql>
             <comment>This table describe message of users</comment>
+            <sql>
+                CREATE TABLE Message(
+                messageId INT(11) AUTO_INCREMENT NOT NULL,
+                userId INT(11),
+                description VARCHAR(20),
+                PRIMARY KEY (messageId),
+                CONSTRAINT f_userId FOREIGN KEY (userId) REFERENCES User (userId));
+            </sql>
             <rollback>
-                <sql>drop table Message</sql>
+                <sql>DROP TABLE Message</sql>
             </rollback>
         </changeSet>
 
         <changeSet id="4" author="Nastya">
-            <sql>
-                create table TagHome(
-                tagId int(11) AUTO_INCREMENT,
-                tagSimple varchar(20),
-                messageId int(11),
-                PRIMARY KEY (tagId),
-                FOREIGN KEY (messageId) REFERENCES Message (messageId));
-            </sql>
             <comment>This table describe private message of users</comment>
+            <sql>
+                CREATE TABLE TagHome(
+                tagId INT(11) AUTO_INCREMENT NOT NULL,
+                tagSimple VARCHAR(20),
+                messageId INT(11),
+                PRIMARY KEY (tagId));
+            </sql>
             <rollback>
-                <sql>drop table TagHome</sql>
+                <sql>DROP TABLE TagHome</sql>
             </rollback>
         </changeSet>
 
         <changeSet id="5" author="Nastya">
-            <sql>
-                create table TagWork(
-                tagId int(11) AUTO_INCREMENT,
-                tagImportant varchar(20),
-                messageId int(11),
-                PRIMARY KEY (tagId),
-                FOREIGN KEY (messageId) REFERENCES Message (messageId));
-            </sql>
             <comment>This table describe work message of users</comment>
+            <sql>
+                CREATE TABLE TagWork(
+                tagId INT(11) AUTO_INCREMENT NOT NULL,
+                tagImportant VARCHAR(20),
+                messageId INT(11),
+                PRIMARY KEY (tagId));
+            </sql>
             <rollback>
-                <sql>drop table TagWork</sql>
+                <sql>DROP TABLE TagWork</sql>
             </rollback>
+        </changeSet>
+
+        <changeSet id="6" author="Nastya">
+            <comment>This table to bind table Message with table TagHome</comment>
+            <sql>
+                CREATE TABLE MessageTagHome(
+                messageTagId INT(11) AUTO_INCREMENT NOT NULL,
+                messageId INT(11),
+                tagId INT(11),
+                PRIMARY KEY (messageTagId),
+                CONSTRAINT fk_tag_message FOREIGN KEY (messageId) REFERENCES Message (messageId),
+                CONSTRAINT fk_tag_tag FOREIGN KEY (tagId) REFERENCES TagHome (tagId));
+            </sql>
+        </changeSet>
+
+        <changeSet id="7" author="Nastya">
+            <comment>This table to bind table Message with table TagWork</comment>
+            <sql>
+                CREATE TABLE MessageTagWork(
+                messageTagId INT(11) AUTO_INCREMENT NOT NULL,
+                messageId INT(11),
+                tagId INT(11),
+                PRIMARY KEY (messageTagId),
+                CONSTRAINT fk_tag_message_w FOREIGN KEY (messageId) REFERENCES Message (messageId),
+                CONSTRAINT fk_tag_tag_w FOREIGN KEY (tagId) REFERENCES TagWork (tagId));
+            </sql>
         </changeSet>
 
 </databaseChangeLog>

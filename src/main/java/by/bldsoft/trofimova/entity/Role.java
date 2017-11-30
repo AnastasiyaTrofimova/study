@@ -29,6 +29,5 @@ public class Role implements Serializable {
     private Long userId;
 
     @OneToOne(mappedBy = "role")
-    //@JoinColumn(name = "user_id")
     public User user;
 }
