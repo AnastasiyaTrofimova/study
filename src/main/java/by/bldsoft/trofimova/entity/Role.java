@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Getter
@@ -14,7 +15,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Entity
 @Table(name = "Role")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = Role.class, property = "roleId")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
+        scope = Role.class, property = "roleId")
 @EqualsAndHashCode(of = "roleId")
 public class Role implements Serializable {
     @Id
@@ -25,9 +27,9 @@ public class Role implements Serializable {
     @Column(name = "role")
     private String role;
 
-    @Column(name = "userId")
-    private Long userId;
+ /*   @Column(name = "userId")
+    private Long userId;*/
 
-    @OneToOne(mappedBy = "role")
-    public User user;
+    @OneToMany(mappedBy = "role")
+    public List<User> users;
 }

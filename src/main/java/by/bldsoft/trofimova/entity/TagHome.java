@@ -13,7 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "TagHome")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = TagHome.class, property = "tagId")
+@NamedEntityGraph(name = "TagHome.message", attributeNodes = {@NamedAttributeNode("message")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
+        scope = TagHome.class, property = "tagId")
 @EqualsAndHashCode(of = "tagId")
     public class TagHome implements java.io.Serializable{
         @Id
@@ -24,7 +26,7 @@ import java.util.List;
         @Column(name = "tagSimple")
         private String tagSimple;
 
-        @ManyToMany(fetch = FetchType.EAGER)
+        @ManyToMany(fetch = FetchType.LAZY)
         @JoinTable(name = "MessageTagHome",
                 joinColumns = @JoinColumn(name = "tagId"),
                 inverseJoinColumns = @JoinColumn(name = "messageId"))

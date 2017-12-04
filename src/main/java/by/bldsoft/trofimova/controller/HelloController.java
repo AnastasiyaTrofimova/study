@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
@@ -53,7 +54,7 @@ public class HelloController {
         return messageService.findAll();
     }
 
-    @GetMapping("/messages/{id}")
+    @GetMapping("/{id}/messages")
     public Message findByMesId(@PathVariable Long id){
         return messageService.findByMesId(id);
     }
@@ -64,13 +65,13 @@ public class HelloController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/messages/{id}")
+    @PutMapping("/{id}/messages")
     public ResponseEntity<Void> updateMessage(@RequestBody Message message){
         messageService.save(message);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/messages/{id}")
+    @DeleteMapping("/{id}/messages")
     public void deleteMessage(@PathVariable Long id){
         messageService.delete(id);
     }

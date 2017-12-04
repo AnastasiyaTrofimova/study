@@ -3,7 +3,10 @@ package by.bldsoft.trofimova.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -11,8 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "User")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = User.class, property = "userId")
-//@ToString
+
+/*@NamedEntityGraph(name = "User.message", attributeNodes = @NamedAttributeNode(value = "messages",
+        subgraph = "messages"),
+        subgraphs = @NamedSubgraph(name = "messages", attributeNodes = @NamedAttributeNode("messageId")))*/
+
+
+@NamedEntityGraph(name = "User.message", attributeNodes = {@NamedAttributeNode("messages")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
+        scope = User.class, property = "userId")
 @EqualsAndHashCode(of = "userId")
 public class User implements java.io.Serializable{
 
@@ -33,13 +43,14 @@ public class User implements java.io.Serializable{
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user",fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
     public List<Message> messages;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "roleId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "roleId", insertable = false, updatable = false)
     public Role role;
 
 }
+
 
 

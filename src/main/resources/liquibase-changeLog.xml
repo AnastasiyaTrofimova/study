@@ -11,7 +11,6 @@
                 CREATE TABLE Role(
                 roleId INT(11) AUTO_INCREMENT NOT NULL,
                 role VARCHAR(20) NOT NULL,
-                userId INT(11),
                 PRIMARY KEY (roleId));
             </sql>
             <rollback>
@@ -29,7 +28,7 @@
                 phone VARCHAR(20),
                 roleId INT(11),
                 PRIMARY KEY (userId),
-                CONSTRAINT f_roleId FOREIGN KEY (roleId) REFERENCES Role (roleId));
+                CONSTRAINT fk_roleId FOREIGN KEY (roleId) REFERENCES Role (roleId));
             </sql>
             <rollback>
                 <sql>DROP TABLE User</sql>
@@ -44,7 +43,7 @@
                 userId INT(11),
                 description VARCHAR(20),
                 PRIMARY KEY (messageId),
-                CONSTRAINT f_userId FOREIGN KEY (userId) REFERENCES User (userId));
+                CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES User (userId));
             </sql>
             <rollback>
                 <sql>DROP TABLE Message</sql>
@@ -82,7 +81,7 @@
         <changeSet id="6" author="Nastya">
             <comment>This table to bind table Message with table TagHome</comment>
             <sql>
-                CREATE TABLE MessageTagHome(
+                CREATE TABLE Message_TagHome(
                 messageTagId INT(11) AUTO_INCREMENT NOT NULL,
                 messageId INT(11),
                 tagId INT(11),
@@ -90,12 +89,15 @@
                 CONSTRAINT fk_tag_message FOREIGN KEY (messageId) REFERENCES Message (messageId),
                 CONSTRAINT fk_tag_tag FOREIGN KEY (tagId) REFERENCES TagHome (tagId));
             </sql>
+            <rollback>
+                <sql>DROP TABLE MessageTagHome</sql>
+            </rollback>
         </changeSet>
 
         <changeSet id="7" author="Nastya">
             <comment>This table to bind table Message with table TagWork</comment>
             <sql>
-                CREATE TABLE MessageTagWork(
+                CREATE TABLE Message_TagWork(
                 messageTagId INT(11) AUTO_INCREMENT NOT NULL,
                 messageId INT(11),
                 tagId INT(11),
@@ -103,6 +105,31 @@
                 CONSTRAINT fk_tag_message_w FOREIGN KEY (messageId) REFERENCES Message (messageId),
                 CONSTRAINT fk_tag_tag_w FOREIGN KEY (tagId) REFERENCES TagWork (tagId));
             </sql>
+            <rollback>
+                <sql>DROP TABLE MessageTagWork</sql>
+            </rollback>
         </changeSet>
+
+        <changeSet id="8" author="Nastya">
+            <comment>Insert data in the table Role</comment>
+            <sql>INSERT INTO Role VALUES (1,'admin');</sql>
+            <sql>INSERT INTO Role VALUES (2,'guest');</sql>
+        </changeSet>
+
+        <changeSet id="9" author="Nastya">
+            <comment>Insert data in the table User</comment>
+            <sql>INSERT INTO User VALUES (1,'Ivan', 'Ivanov', 11111, 1);</sql>
+            <sql>INSERT INTO User VALUES (2,'Petr', 'Petrov', 22222, 2);</sql>
+            <sql>INSERT INTO User VALUES (3,'Semen', 'Semenov', 33333, 2);</sql>
+            <sql>INSERT INTO User VALUES (4,'Vasya', 'Vasilev', 44444, 2);</sql>
+        </changeSet>
+
+        <changeSet id="10" author="Nastya">
+            <comment>Insert data in the table Message</comment>
+            <sql>INSERT INTO Message VALUES (1, 1, 'one');</sql>
+            <sql>INSERT INTO Message VALUES (2, 2, 'second');</sql>
+            <sql>INSERT INTO Message VALUES (3, 3, 'three');</sql>
+        </changeSet>
+
 
 </databaseChangeLog>

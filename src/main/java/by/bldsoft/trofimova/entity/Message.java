@@ -15,7 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "Message")
-@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, scope = Message.class, property="messageId")
+//@NamedEntityGraph(name = "Message.user", attributeNodes = {@NamedAttributeNode("user")})
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
+        scope = Message.class, property="messageId")
 @EqualsAndHashCode(of = "messageId")
 public class Message implements java.io.Serializable{
 
@@ -33,10 +35,10 @@ public class Message implements java.io.Serializable{
     @JoinColumn(name = "userId", insertable = false, updatable = false)
     public User user;
 
-    @ManyToMany(mappedBy = "message")
+    @ManyToMany(mappedBy = "message", fetch = FetchType.LAZY)
     public List<TagHome> tagHome;
 
-    @ManyToMany(mappedBy = "message")
+    @ManyToMany(mappedBy = "message", fetch = FetchType.LAZY)
     public List<TagWork> tagWork;
 
 }
