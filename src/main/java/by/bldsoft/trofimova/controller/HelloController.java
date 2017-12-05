@@ -2,24 +2,23 @@ package by.bldsoft.trofimova.controller;
 
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.entity.User;
-import by.bldsoft.trofimova.service.MessageServiceImpl;
-import by.bldsoft.trofimova.service.UserServiceImpl;
+import by.bldsoft.trofimova.service.MessageService;
+import by.bldsoft.trofimova.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/users")
 public class HelloController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    private MessageServiceImpl messageService;
+    private MessageService messageService;
 
 
     @GetMapping

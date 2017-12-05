@@ -1,12 +1,8 @@
 package by.bldsoft.trofimova.config;
 
-import ch.qos.logback.classic.LoggerContext;
-import ch.qos.logback.core.status.OnConsoleStatusListener;
-import ch.qos.logback.core.status.StatusManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +12,6 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -81,12 +76,6 @@ class PersistenceContext {
         return transactionManager;
     }
 
-    LoggerContext lc = (LoggerContext) LoggerFactory.getILoggerFactory();
-    {
-        StatusManager statusManager = lc.getStatusManager();
-        OnConsoleStatusListener onConsoleListener = new OnConsoleStatusListener();
-        statusManager.add(onConsoleListener);
-    }
 
     @Bean
     public SpringLiquibase liquibase() {

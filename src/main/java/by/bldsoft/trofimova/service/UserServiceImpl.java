@@ -2,17 +2,13 @@ package by.bldsoft.trofimova.service;
 
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.entity.User;
-import by.bldsoft.trofimova.repository.MessageRepository;
 import by.bldsoft.trofimova.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
-@Repository
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -25,8 +21,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-       /* Message one = messageRepository.getOne(23);
-        user.getMessages().add(one);*/
+
+        List<Message> messages = user.getMessages();
+
+        for (Message message : messages) {
+            message.setUser(user);
+        }
+
         return userRepository.save(user);
     }
 

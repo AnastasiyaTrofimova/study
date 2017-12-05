@@ -3,13 +3,11 @@ package by.bldsoft.trofimova.service;
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@Repository
 public class MessageServiceImpl implements MessageService {
 
     @Autowired

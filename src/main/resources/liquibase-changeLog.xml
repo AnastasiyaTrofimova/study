@@ -13,9 +13,7 @@
                 role VARCHAR(20) NOT NULL,
                 PRIMARY KEY (roleId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE Role</sql>
-            </rollback>
+            <rollback>DROP TABLE Role</rollback>
         </changeSet>
 
         <changeSet id="2" author="Nastya">
@@ -30,9 +28,7 @@
                 PRIMARY KEY (userId),
                 CONSTRAINT fk_roleId FOREIGN KEY (roleId) REFERENCES Role (roleId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE User</sql>
-            </rollback>
+            <rollback>DROP TABLE User</rollback>
         </changeSet>
 
         <changeSet id="3" author="Nastya">
@@ -45,9 +41,7 @@
                 PRIMARY KEY (messageId),
                 CONSTRAINT fk_userId FOREIGN KEY (userId) REFERENCES User (userId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE Message</sql>
-            </rollback>
+            <rollback>DROP TABLE Message</rollback>
         </changeSet>
 
         <changeSet id="4" author="Nastya">
@@ -59,9 +53,7 @@
                 messageId INT(11),
                 PRIMARY KEY (tagId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE TagHome</sql>
-            </rollback>
+            <rollback>DROP TABLE TagHome</rollback>
         </changeSet>
 
         <changeSet id="5" author="Nastya">
@@ -73,9 +65,7 @@
                 messageId INT(11),
                 PRIMARY KEY (tagId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE TagWork</sql>
-            </rollback>
+            <rollback>DROP TABLE TagWork</rollback>
         </changeSet>
 
         <changeSet id="6" author="Nastya">
@@ -89,9 +79,7 @@
                 CONSTRAINT fk_tag_message FOREIGN KEY (messageId) REFERENCES Message (messageId),
                 CONSTRAINT fk_tag_tag FOREIGN KEY (tagId) REFERENCES TagHome (tagId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE MessageTagHome</sql>
-            </rollback>
+            <rollback>DROP TABLE MessageTagHome</rollback>
         </changeSet>
 
         <changeSet id="7" author="Nastya">
@@ -105,9 +93,7 @@
                 CONSTRAINT fk_tag_message_w FOREIGN KEY (messageId) REFERENCES Message (messageId),
                 CONSTRAINT fk_tag_tag_w FOREIGN KEY (tagId) REFERENCES TagWork (tagId));
             </sql>
-            <rollback>
-                <sql>DROP TABLE MessageTagWork</sql>
-            </rollback>
+            <rollback>DROP TABLE MessageTagWork</rollback>
         </changeSet>
 
         <changeSet id="8" author="Nastya">

@@ -3,9 +3,7 @@ package by.bldsoft.trofimova.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 @Getter
@@ -14,11 +12,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "User")
-
-/*@NamedEntityGraph(name = "User.message", attributeNodes = @NamedAttributeNode(value = "messages",
-        subgraph = "messages"),
-        subgraphs = @NamedSubgraph(name = "messages", attributeNodes = @NamedAttributeNode("messageId")))*/
-
 
 @NamedEntityGraph(name = "User.message", attributeNodes = {@NamedAttributeNode("messages")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
@@ -43,7 +36,7 @@ public class User implements java.io.Serializable{
     @Column(name = "phone")
     private String phone;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     public List<Message> messages;
 
     @ManyToOne(fetch = FetchType.LAZY)

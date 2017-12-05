@@ -1,8 +1,6 @@
 package by.bldsoft.trofimova.entity;
 
 import com.fasterxml.jackson.annotation.*;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.*;
 
 
@@ -15,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "Message")
-//@NamedEntityGraph(name = "Message.user", attributeNodes = {@NamedAttributeNode("user")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
         scope = Message.class, property="messageId")
 @EqualsAndHashCode(of = "messageId")
@@ -32,7 +29,7 @@ public class Message implements java.io.Serializable{
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId", insertable = false, updatable = false)
+    @JoinColumn(name = "userId", nullable = false, updatable = false)
     public User user;
 
     @ManyToMany(mappedBy = "message", fetch = FetchType.LAZY)
