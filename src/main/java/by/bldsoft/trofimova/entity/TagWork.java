@@ -26,10 +26,7 @@ import java.util.List;
         @Column(name = "tagImportant")
         private String tagImportant;
 
-        @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(name = "MessageTagWork",
-                joinColumns = @JoinColumn(name = "tagId"),
-                inverseJoinColumns = @JoinColumn(name = "messageId"))
+        @ManyToMany(mappedBy = "tagWork", fetch = FetchType.LAZY)
         public List<Message> message;
 
 }

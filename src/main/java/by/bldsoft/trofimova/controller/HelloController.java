@@ -1,6 +1,7 @@
 package by.bldsoft.trofimova.controller;
 
 import by.bldsoft.trofimova.entity.Message;
+import by.bldsoft.trofimova.entity.MessageDTO;
 import by.bldsoft.trofimova.entity.User;
 import by.bldsoft.trofimova.service.MessageService;
 import by.bldsoft.trofimova.service.UserService;
@@ -20,15 +21,14 @@ public class HelloController {
     @Autowired
     private MessageService messageService;
 
-
     @GetMapping
     public List<User> findAll(){
         return userService.findAll();
     }
 
-    @GetMapping("/{id}")
-    public User findById(@PathVariable Long id){
-        return userService.findById(id);
+    @GetMapping("/{userId}")
+    public User findById(@PathVariable Long userId){
+        return userService.findById(userId);
     }
 
     @PostMapping
@@ -37,42 +37,42 @@ public class HelloController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUser(@RequestBody User user){
-        userService.save(user);
-        return ResponseEntity.ok().build();
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user){
+        userService.saveAndFlush(userId, user);
+        return ResponseEntity.ok().body(user);
     }
 
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id){
-        userService.delete(id);
+    @DeleteMapping("/{userId}")
+    public void delete(@PathVariable Long userId){
+        userService.delete(userId);
     }
 
-    @GetMapping("/messages")
+    @GetMapping("/{userId}/messages")
     public List<Message> findAllMes(){
         return messageService.findAll();
     }
 
-    @GetMapping("/{id}/messages")
-    public Message findByMesId(@PathVariable Long id){
-        return messageService.findByMesId(id);
+    @GetMapping("/{userId}/messages/{messageId}")
+    public Message findByMesId(@PathVariable Long messageId){
+        return messageService.findByMesId(messageId);
     }
 
-    @PostMapping("/messages")
-    public ResponseEntity<Void> newMessage(@RequestBody Message message){
-        messageService.save(message);
-        return ResponseEntity.ok().build();
+    @PostMapping("/{userId}/messages")
+    public ResponseEntity<MessageDTO> newMessage(@PathVariable Long userId, @RequestBody MessageDTO messageDTO){
+        messageService.save(userId, messageDTO);
+        return ResponseEntity.ok().body(messageDTO);
     }
 
-    @PutMapping("/{id}/messages")
-    public ResponseEntity<Void> updateMessage(@RequestBody Message message){
-        messageService.save(message);
-        return ResponseEntity.ok().build();
+    @PutMapping("/{userId}/messages/{messageId}")
+    public ResponseEntity<MessageDTO> updateMessage(@PathVariable Long userId, @RequestBody MessageDTO messageDTO, @PathVariable Long messageId){
+        messageService.update(userId, messageDTO, messageId);
+        return ResponseEntity.ok().body(messageDTO);
     }
 
-    @DeleteMapping("/{id}/messages")
-    public void deleteMessage(@PathVariable Long id){
-        messageService.delete(id);
+    @DeleteMapping("/{userId}/messages/{messageId}")
+    public void deleteMessage(@PathVariable Long messageId){
+        messageService.delete(messageId);
     }
 
 }

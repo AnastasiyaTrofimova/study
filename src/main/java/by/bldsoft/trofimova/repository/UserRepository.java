@@ -15,8 +15,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     User save(User user);
 
+    User saveAndFlush(User user);
+
     @Query(value = "select user from User user where user.id = :id")
-    User findById(@Param("id") Long id);
+    User findById(@Param("id") Long messageId);
 
     void delete(Long id);
 }

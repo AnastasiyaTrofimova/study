@@ -9,7 +9,8 @@ public interface UserService {
 
     List<User> findAll();
     User save(User user);
-    User findById(Long user_id);
-    void delete(Long id);
+    User saveAndFlush(Long userId, User user);
+    User findById(Long userId);
+    void delete(Long userId);
 
 }

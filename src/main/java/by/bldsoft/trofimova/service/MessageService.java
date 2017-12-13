@@ -1,6 +1,8 @@
 package by.bldsoft.trofimova.service;
 
 import by.bldsoft.trofimova.entity.Message;
+import by.bldsoft.trofimova.entity.MessageDTO;
+import by.bldsoft.trofimova.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,9 +11,10 @@ import java.util.List;
 public interface MessageService {
 
     List<Message> findAll();
-    Message save(Message message);
-    Message findByMesId(Long message_id);
-    void delete(Long id);
+    Message save(Long userId, MessageDTO messageDTO);
+    Message update(Long userId, MessageDTO messageDTO, Long messageId);
+    Message findByMesId(Long messageId);
+    void delete(Long messageId);
 
 
 }

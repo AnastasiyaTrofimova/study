@@ -3,6 +3,7 @@ package by.bldsoft.trofimova.config;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -83,6 +84,11 @@ class PersistenceContext {
         liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
         liquibase.setDataSource(dataSource());
         return liquibase;
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
   }
 

@@ -21,7 +21,6 @@ public class Message implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "messageId")
-
     private Long messageId;
 
     @JsonProperty("description")
@@ -32,10 +31,16 @@ public class Message implements java.io.Serializable{
     @JoinColumn(name = "userId", nullable = false, updatable = false)
     public User user;
 
-    @ManyToMany(mappedBy = "message", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Message_TagHome",
+            joinColumns = @JoinColumn(name = "messageId"),
+            inverseJoinColumns = @JoinColumn(name = "tagId"))
     public List<TagHome> tagHome;
 
-    @ManyToMany(mappedBy = "message", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "Message_TagWork",
+            joinColumns = @JoinColumn(name = "messageId"),
+            inverseJoinColumns = @JoinColumn(name = "tagId"))
     public List<TagWork> tagWork;
 
 }

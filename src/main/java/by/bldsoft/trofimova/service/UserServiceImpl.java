@@ -32,11 +32,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long user_id) {
-        return userRepository.findById(user_id);
+    public User saveAndFlush(Long userId, User user) {
+        User use = new User();
+        use.setUserId(userId);
+        use.setName(user.getName());
+        use.setSurname(user.getSurname());
+        use.setPhone(user.getPhone());
+        use.setRole(user.getRole());
+        use.setMessages(user.getMessages());
+
+        user.setUserId(use.getUserId());
+        user.setName(use.getName());
+        user.setSurname(use.getSurname());
+        user.setPhone(use.getPhone());
+        user.setRole(use.getRole());
+        user.setMessages(use.getMessages());
+
+        return userRepository.saveAndFlush(user);
     }
 
-    public void delete(Long id) {
-        userRepository.delete(id);
+    @Override
+    public User findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
+    public void delete(Long userId) {
+        userRepository.delete(userId);
     }
 }
