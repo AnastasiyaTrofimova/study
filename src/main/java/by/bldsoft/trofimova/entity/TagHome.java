@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ import java.util.List;
         @Column(name = "tagSimple")
         private String tagSimple;
 
-        @ManyToMany(mappedBy = "tagHome",fetch = FetchType.LAZY)
+        @ManyToMany(mappedBy = "tagHome", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
         public List<Message> message;
 
 }

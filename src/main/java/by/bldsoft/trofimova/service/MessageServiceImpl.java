@@ -39,18 +39,15 @@ public class MessageServiceImpl implements MessageService {
 
         List<Long> tagsHomeIds = messageDTO.getTagsHome();
         List<TagHome> tagHomes = tagsHomeRepository.findAll(tagsHomeIds);
-        message.setTagHome(tagHomes);
+        List<TagHome> th = new ArrayList<>(tagHomes);
+        message.setTagHome(th);
 
         List<Long> tagsWorkIds = messageDTO.getTagsWork();
         List<TagWork> tagWorks = tagsWorkRepository.findAll(tagsWorkIds);
-        message.setTagWork(tagWorks);
+        List<TagWork> tw = new ArrayList<>(tagWorks);
+        message.setTagWork(tw);
 
         Message createdMessage = messageRepository.save(message);
-
-//        createdMessage.setMessageId(message.getMessageId());
-//        createdMessage.setDescription(message.getDescription());
-//        createdMessage.setTagHome(message.getTagHome());
-//        createdMessage.setTagWork(message.getTagWork());
 
         messageDTO.setMessageId(createdMessage.getMessageId());
         messageDTO.setDescription(createdMessage.getDescription());
@@ -63,13 +60,13 @@ public class MessageServiceImpl implements MessageService {
         List<Long> lo = createdMessage.getTagWork().stream()
                 .map(tagWork -> tagWork.getTagId())
                 .collect(Collectors.toList());
-         messageDTO.setTagsWork(lo);
+        messageDTO.setTagsWork(lo);
 
         return message;
     }
 
     @Override
-    public Message update(Long userId, MessageDTO messageDTO, Long messageId) {
+    public Message saveAndFlush(Long userId, MessageDTO messageDTO, Long messageId) {
 
         Message message = messageRepository.find(messageId, userId);
 
@@ -77,13 +74,25 @@ public class MessageServiceImpl implements MessageService {
 
         List<Long> tagsHomeIds = messageDTO.getTagsHome();
         List<TagHome> tagHomes = tagsHomeRepository.findAll(tagsHomeIds);
-        message.setTagHome(tagHomes);
+       /* Set<TagHome> th = new HashSet<>(tagHomes);
+        message.setTagHome(th);*/
+
+        List<Long> ww = new ArrayList<>(tagsHomeIds);
+        List<TagHome> qq = new ArrayList<>(tagHomes);
+        ww.retainAll(qq);
+        message.setTagHome(qq);
 
         List<Long> tagsWorkIds = messageDTO.getTagsWork();
         List<TagWork> tagWorks = tagsWorkRepository.findAll(tagsWorkIds);
-        message.setTagWork(tagWorks);
+       /* Set<TagWork> tw = new HashSet<>(tagWorks);
+        message.setTagWork(tw);*/
 
-        Message createdMessage = messageRepository.save(message);
+        List<Long> ee = new ArrayList<>(tagsWorkIds);
+        List<TagWork> rr = new ArrayList<>(tagWorks);
+        ee.retainAll(rr);
+        message.setTagWork(rr);
+
+        Message createdMessage = messageRepository.saveAndFlush(message);
 
         messageDTO.setMessageId(createdMessage.getMessageId());
         messageDTO.setDescription(createdMessage.getDescription());

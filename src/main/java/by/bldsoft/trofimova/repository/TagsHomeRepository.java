@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface TagsHomeRepository extends JpaRepository<TagHome, Long> {
 
-    List <TagHome> findAll();
+    List<TagHome> findAll();
 
  }

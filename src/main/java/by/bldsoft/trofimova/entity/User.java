@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -12,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "User")
-
 @NamedEntityGraph(name = "User.message", attributeNodes = {@NamedAttributeNode("messages")})
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
         scope = User.class, property = "userId")

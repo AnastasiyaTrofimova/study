@@ -2,6 +2,8 @@ package by.bldsoft.trofimova.repository;
 
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.entity.User;
+import liquibase.datatype.core.VarcharType;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

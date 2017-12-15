@@ -66,7 +66,7 @@ public class HelloController {
 
     @PutMapping("/{userId}/messages/{messageId}")
     public ResponseEntity<MessageDTO> updateMessage(@PathVariable Long userId, @RequestBody MessageDTO messageDTO, @PathVariable Long messageId){
-        messageService.update(userId, messageDTO, messageId);
+        messageService.saveAndFlush(userId, messageDTO, messageId);
         return ResponseEntity.ok().body(messageDTO);
     }
 
