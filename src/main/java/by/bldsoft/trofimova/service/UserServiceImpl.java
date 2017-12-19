@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -31,7 +30,6 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
-
 
     public User saveAndFlush(Long userId, User user) {
         User use = new User();

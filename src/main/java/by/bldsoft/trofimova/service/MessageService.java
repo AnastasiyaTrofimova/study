@@ -2,11 +2,9 @@ package by.bldsoft.trofimova.service;
 
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.entity.MessageDTO;
-import by.bldsoft.trofimova.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public interface MessageService {

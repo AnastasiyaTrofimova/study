@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -17,9 +16,9 @@ public class MessageDTO {
 
     private String description;
 
-    private List<Long> tagsHome;
+    private Set<Long> tagsHome;
 
-    private List<Long> tagsWork;
+    private Set<Long> tagsWork;
 
 }
 

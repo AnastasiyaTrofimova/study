@@ -8,6 +8,7 @@ import by.bldsoft.trofimova.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,14 +38,14 @@ public class MessageServiceImpl implements MessageService {
         message.setUser(userRepository.findById(userId));
         message.setDescription(messageDTO.getDescription());
 
-        List<Long> tagsHomeIds = messageDTO.getTagsHome();
+        Set<Long> tagsHomeIds = messageDTO.getTagsHome();
         List<TagHome> tagHomes = tagsHomeRepository.findAll(tagsHomeIds);
-        List<TagHome> th = new ArrayList<>(tagHomes);
+        Set<TagHome> th = new HashSet<>(tagHomes);
         message.setTagHome(th);
 
-        List<Long> tagsWorkIds = messageDTO.getTagsWork();
+        Set<Long> tagsWorkIds = messageDTO.getTagsWork();
         List<TagWork> tagWorks = tagsWorkRepository.findAll(tagsWorkIds);
-        List<TagWork> tw = new ArrayList<>(tagWorks);
+        Set<TagWork> tw = new HashSet<>(tagWorks);
         message.setTagWork(tw);
 
         Message createdMessage = messageRepository.save(message);
@@ -52,65 +53,98 @@ public class MessageServiceImpl implements MessageService {
         messageDTO.setMessageId(createdMessage.getMessageId());
         messageDTO.setDescription(createdMessage.getDescription());
 
-        List<Long> ll = createdMessage.getTagHome().stream()
+        Set<Long> ll = createdMessage.getTagHome().stream()
                 .map(tagHome -> tagHome.getTagId())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         messageDTO.setTagsHome(ll);
 
-        List<Long> lo = createdMessage.getTagWork().stream()
+        Set<Long> lo = createdMessage.getTagWork().stream()
                 .map(tagWork -> tagWork.getTagId())
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
         messageDTO.setTagsWork(lo);
 
         return message;
     }
 
     @Override
+    @Transactional
     public Message saveAndFlush(Long userId, MessageDTO messageDTO, Long messageId) {
 
-        Message message = messageRepository.find(messageId, userId);
+        Message message = new Message();
 
-        message.setDescription(messageDTO.getDescription());
+        Set<Long> tagsHomeIdsFromDTO = messageDTO.getTagsHome();
+        List<TagHome> existingTagHomeFromDTO = tagsHomeRepository.findAll(tagsHomeIdsFromDTO);
 
-        List<Long> tagsHomeIds = messageDTO.getTagsHome();
-        List<TagHome> tagHomes = tagsHomeRepository.findAll(tagsHomeIds);
-       /* Set<TagHome> th = new HashSet<>(tagHomes);
-        message.setTagHome(th);*/
+        Message messageFromDB = messageRepository.find(messageId, userId);
 
-        List<Long> ww = new ArrayList<>(tagsHomeIds);
-        List<TagHome> qq = new ArrayList<>(tagHomes);
-        ww.retainAll(qq);
-        message.setTagHome(qq);
+        Set<TagHome> oldTagsHome = messageFromDB.getTagHome();
 
-        List<Long> tagsWorkIds = messageDTO.getTagsWork();
-        List<TagWork> tagWorks = tagsWorkRepository.findAll(tagsWorkIds);
-       /* Set<TagWork> tw = new HashSet<>(tagWorks);
-        message.setTagWork(tw);*/
+        Set<Long> existingTagHomeFromDTOIds = existingTagHomeFromDTO.stream()
+                .map(tagHome -> tagHome.getTagId())
+                .collect(Collectors.toSet());
 
-        List<Long> ee = new ArrayList<>(tagsWorkIds);
-        List<TagWork> rr = new ArrayList<>(tagWorks);
-        ee.retainAll(rr);
-        message.setTagWork(rr);
+        Set<Long> oldTagIdsHome = oldTagsHome.stream()
+                .map(tagHome -> tagHome.getTagId())
+                .collect(Collectors.toSet());
 
-        Message createdMessage = messageRepository.saveAndFlush(message);
+        HashSet<Long> newIdsHome = new HashSet<>(existingTagHomeFromDTOIds);
+        newIdsHome.removeAll(oldTagIdsHome);
+
+        HashSet<Long> deletedIdsHome = new HashSet<>(oldTagIdsHome);
+        deletedIdsHome.removeAll(existingTagHomeFromDTOIds);
+
+        messageFromDB.getTagHome().removeIf(tagHome -> deletedIdsHome.contains(tagHome.getTagId()));
+
+        List<TagHome> newTagsHome = existingTagHomeFromDTO.stream()
+                .filter(tagHome -> newIdsHome.contains(tagHome.getTagId()))
+                .collect(Collectors.toList());
+
+        messageFromDB.getTagHome().addAll(newTagsHome);
+
+        Set<Long> tagsWorkIdsFromDTO = messageDTO.getTagsWork();
+        List<TagWork> existingTagWorkFromDTO = tagsWorkRepository.findAll(tagsWorkIdsFromDTO);
+
+        Set<TagWork> oldTags = messageFromDB.getTagWork();
+
+        Set<Long> existingTagWorkFromDTOIds = existingTagWorkFromDTO.stream()
+                .map(tagWork -> tagWork.getTagId())
+                .collect(Collectors.toSet());
+
+        Set<Long> oldTagIds = oldTags.stream()
+                .map(tagWork -> tagWork.getTagId())
+                .collect(Collectors.toSet());
+
+        HashSet<Long> newIds = new HashSet<>(existingTagWorkFromDTOIds);
+        newIds.removeAll(oldTagIds);
+
+        HashSet<Long> deletedIds = new HashSet<>(oldTagIds);
+        deletedIds.removeAll(existingTagWorkFromDTOIds);
+
+        messageFromDB.getTagWork().removeIf(tagWork -> deletedIds.contains(tagWork.getTagId()));
+
+        Set<TagWork> newTags = existingTagWorkFromDTO.stream()
+                .filter(tagWork -> newIds.contains(tagWork.getTagId()))
+                .collect(Collectors.toSet());
+
+        messageFromDB.getTagWork().addAll(newTags);
+
+        Message createdMessage = messageRepository.save(messageFromDB);
 
         messageDTO.setMessageId(createdMessage.getMessageId());
         messageDTO.setDescription(createdMessage.getDescription());
 
-        List<Long> ll = createdMessage.getTagHome().stream()
+        Set<Long> tagHomeFinal = createdMessage.getTagHome().stream()
                 .map(tagHome -> tagHome.getTagId())
-                .collect(Collectors.toList());
-        messageDTO.setTagsHome(ll);
+                .collect(Collectors.toSet());
+        messageDTO.setTagsHome(tagHomeFinal);
 
-        List<Long> lo = createdMessage.getTagWork().stream()
+        Set<Long> tagWorkFinal = createdMessage.getTagWork().stream()
                 .map(tagWork -> tagWork.getTagId())
-                .collect(Collectors.toList());
-        messageDTO.setTagsWork(lo);
+                .collect(Collectors.toSet());
+        messageDTO.setTagsWork(tagWorkFinal);
 
         return message;
-
     }
-
 
     @Override
     public Message findByMesId(Long messageId) {

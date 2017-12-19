@@ -118,13 +118,18 @@
         </changeSet>
 
         <changeSet id="11" author="Nastya">
-            <comment>Delete column messageId from TagHome</comment>
+            <comment>dele column messageId from TagHome</comment>
             <sql>ALTER TABLE TagHome DROP COLUMN messageId</sql>
         </changeSet>
 
         <changeSet id="12" author="Nastya">
             <comment>Delete column messageId from TagWork</comment>
             <sql>ALTER TABLE TagWork DROP COLUMN messageId</sql>
+        </changeSet>
+
+        <changeSet id="13" author="Nastya">
+            <comment>Add column password to User</comment>
+            <sql>ALTER TABLE User ADD password VARCHAR(100);</sql>
         </changeSet>
 
 </databaseChangeLog>

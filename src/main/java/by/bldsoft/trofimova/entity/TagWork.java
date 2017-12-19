@@ -27,7 +27,7 @@ import java.util.Set;
         @Column(name = "tagImportant")
         private String tagImportant;
 
-        @ManyToMany(mappedBy = "tagWork", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+        @ManyToMany(mappedBy = "tagWork", fetch = FetchType.LAZY)
         public List<Message> message;
 
 }

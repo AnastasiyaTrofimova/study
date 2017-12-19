@@ -5,7 +5,6 @@ import lombok.*;
 
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -36,13 +35,13 @@ public class Message implements java.io.Serializable{
     @JoinTable(name = "Message_TagHome",
             joinColumns = @JoinColumn(name = "messageId"),
             inverseJoinColumns = @JoinColumn(name = "tagId"))
-    public List<TagHome> tagHome;
+    public Set<TagHome> tagHome;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Message_TagWork",
             joinColumns = @JoinColumn(name = "messageId"),
             inverseJoinColumns = @JoinColumn(name = "tagId"))
-    public List<TagWork> tagWork;
+    public Set<TagWork> tagWork;
 
 }
 
