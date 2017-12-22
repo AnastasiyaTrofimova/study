@@ -132,4 +132,9 @@
             <sql>ALTER TABLE User ADD password VARCHAR(100);</sql>
         </changeSet>
 
+        <changeSet id="14" author="Nastya">
+            <comment>Rename column name to username in table User</comment>
+            <sql>ALTER TABLE User CHANGE COLUMN name username VARCHAR(20);</sql>
+        </changeSet>
+
 </databaseChangeLog>

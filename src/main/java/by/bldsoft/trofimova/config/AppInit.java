@@ -6,7 +6,9 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {PersistenceContext.class};
+        return new Class[] {PersistenceContext.class,
+                SecurityConfig.class
+        };
     }
 
     @Override

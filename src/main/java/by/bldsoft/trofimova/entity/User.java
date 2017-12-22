@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
-
 
 @Getter
 @Setter
@@ -24,9 +22,9 @@ public class User implements java.io.Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @JsonProperty("name")
-    @Column(name = "name")
-    private String name;
+    @JsonProperty("username")
+    @Column(name = "username")
+    private String username;
 
     @JsonProperty("surname")
     @Column(name = "surname")
@@ -35,6 +33,10 @@ public class User implements java.io.Serializable{
     @JsonProperty("phone")
     @Column(name = "phone")
     private String phone;
+
+    @JsonProperty("password")
+    @Column(name = "password")
+    private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     public List<Message> messages;

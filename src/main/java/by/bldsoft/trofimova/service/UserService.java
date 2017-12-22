@@ -12,5 +12,6 @@ public interface UserService {
     User saveAndFlush(Long userId, User user);
     User findById(Long userId);
     void delete(Long userId);
+    org.springframework.security.core.userdetails.User findByUsername(String username);
 
 }

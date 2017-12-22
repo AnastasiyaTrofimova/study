@@ -34,14 +34,14 @@ public class UserServiceImpl implements UserService {
     public User saveAndFlush(Long userId, User user) {
         User use = new User();
         use.setUserId(userId);
-        use.setName(user.getName());
+        use.setUsername(user.getUsername());
         use.setSurname(user.getSurname());
         use.setPhone(user.getPhone());
         use.setRole(user.getRole());
         use.setMessages(user.getMessages());
 
         user.setUserId(use.getUserId());
-        user.setName(use.getName());
+        user.setUsername(use.getUsername());
         user.setSurname(use.getSurname());
         user.setPhone(use.getPhone());
         user.setRole(use.getRole());
@@ -57,5 +57,15 @@ public class UserServiceImpl implements UserService {
 
     public void delete(Long userId) {
         userRepository.delete(userId);
+    }
+
+    @Override
+    public org.springframework.security.core.userdetails.User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+
+
+        //findByNameAndPassword(username,password);
+        //findByUsername(username);
+
     }
 }

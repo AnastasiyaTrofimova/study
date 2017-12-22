@@ -21,4 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long>{
     User findById(@Param("id") Long messageId);
 
     void delete(Long id);
+
+    //User findByNameAndPassword (@Param("username") String username, @Param("password") String password);
+
+    org.springframework.security.core.userdetails.User findByUsername(String username);
 }
+
+
