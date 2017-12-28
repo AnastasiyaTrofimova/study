@@ -7,6 +7,8 @@ import by.bldsoft.trofimova.service.MessageService;
 import by.bldsoft.trofimova.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,12 +39,14 @@ public class HelloController {
         return ResponseEntity.ok().build();
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user){
         userService.saveAndFlush(userId, user);
         return ResponseEntity.ok().body(user);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable Long userId){
         userService.delete(userId);
@@ -64,12 +68,14 @@ public class HelloController {
         return ResponseEntity.ok().body(messageDTO);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PutMapping("/{userId}/messages/{messageId}")
     public ResponseEntity<MessageDTO> updateMessage(@PathVariable Long userId, @RequestBody MessageDTO messageDTO, @PathVariable Long messageId){
         messageService.saveAndFlush(userId, messageDTO, messageId);
         return ResponseEntity.ok().body(messageDTO);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @DeleteMapping("/{userId}/messages/{messageId}")
     public void deleteMessage(@PathVariable Long messageId){
         messageService.delete(messageId);

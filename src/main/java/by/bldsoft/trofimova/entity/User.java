@@ -11,7 +11,11 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "User")
-@NamedEntityGraph(name = "User.message", attributeNodes = {@NamedAttributeNode("messages")})
+@NamedEntityGraphs({
+        @NamedEntityGraph(name = "User.message", attributeNodes = {@NamedAttributeNode("messages")}),
+        @NamedEntityGraph(name = "User.role", attributeNodes = {@NamedAttributeNode("role")})
+})
+
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
         scope = User.class, property = "userId")
 @EqualsAndHashCode(of = "userId")

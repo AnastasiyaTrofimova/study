@@ -60,12 +60,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public org.springframework.security.core.userdetails.User findByUsername(String username) {
+    public User findByUsername(String username) {
         return userRepository.findByUsername(username);
 
+   /* @Override
+    public org.springframework.security.core.userdetails.User findByUsername(String username) {
+        return userRepository.findByUsername(username);*/
 
-        //findByNameAndPassword(username,password);
-        //findByUsername(username);
 
     }
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class,
         scope = Role.class, property = "roleId")
 @EqualsAndHashCode(of = "roleId")
-public class Role implements Serializable {
+public class Role implements java.io.Serializable{
     @Id
     @Column(name = "roleId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

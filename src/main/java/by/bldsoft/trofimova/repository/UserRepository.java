@@ -24,7 +24,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     //User findByNameAndPassword (@Param("username") String username, @Param("password") String password);
 
-    org.springframework.security.core.userdetails.User findByUsername(String username);
+    @EntityGraph(value = "User.role", type = EntityGraph.EntityGraphType.FETCH)
+    User findByUsername(String username);
 }
 
 
