@@ -6,7 +6,6 @@ import by.bldsoft.trofimova.repository.TagsHomeRepository;
 import by.bldsoft.trofimova.repository.TagsWorkRepository;
 import by.bldsoft.trofimova.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

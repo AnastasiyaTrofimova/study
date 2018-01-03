@@ -22,8 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     void delete(Long id);
 
-    //User findByNameAndPassword (@Param("username") String username, @Param("password") String password);
-
     @EntityGraph(value = "User.role", type = EntityGraph.EntityGraphType.FETCH)
     User findByUsername(String username);
 }

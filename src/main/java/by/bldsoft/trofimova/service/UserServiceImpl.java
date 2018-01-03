@@ -59,14 +59,4 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(userId);
     }
 
-    @Override
-    public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
-
-   /* @Override
-    public org.springframework.security.core.userdetails.User findByUsername(String username) {
-        return userRepository.findByUsername(username);*/
-
-
-    }
 }

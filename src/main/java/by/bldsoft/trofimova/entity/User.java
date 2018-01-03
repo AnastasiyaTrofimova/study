@@ -48,7 +48,6 @@ public class User implements java.io.Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId", insertable = false, updatable = false)
     public Role role;
-
 }
 
 

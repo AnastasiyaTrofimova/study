@@ -12,6 +12,5 @@ public interface UserService {
     User saveAndFlush(Long userId, User user);
     User findById(Long userId);
     void delete(Long userId);
-    User findByUsername(String username);
 
 }
