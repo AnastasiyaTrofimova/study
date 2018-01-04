@@ -21,12 +21,11 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
-
 @Configuration
 @EnableJpaRepositories(basePackages = {"by.bldsoft.trofimova.repository"})
 @EnableTransactionManagement
 @PropertySource(value="classpath:application.properties")
-class PersistenceConfig {
+public class PersistenceConfig {
 
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
