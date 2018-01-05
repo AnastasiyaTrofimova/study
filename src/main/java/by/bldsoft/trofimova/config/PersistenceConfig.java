@@ -27,17 +27,7 @@ import java.util.Properties;
 @PropertySource(value="classpath:application.properties")
 public class PersistenceConfig {
 
-    @Value("${jdbc.driverClassName}")
-    private String driverClassName;
 
-    @Value("${jdbc.url}")
-    private String url;
-
-    @Value("${jdbc.username}")
-    private String username;
-
-    @Value("${jdbc.password}")
-    private String password;
 
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
@@ -48,15 +38,6 @@ public class PersistenceConfig {
     @Value("${hibernate.format_sql}")
     private String formatSql;
 
-    @Bean
-    DataSource dataSource() {
-        HikariConfig dataSourceConfig = new HikariConfig();
-        dataSourceConfig.setDriverClassName(driverClassName);
-        dataSourceConfig.setJdbcUrl(url);
-        dataSourceConfig.setUsername(username);
-        dataSourceConfig.setPassword(password);
-        return new HikariDataSource(dataSourceConfig);
-    }
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
@@ -82,10 +63,10 @@ public class PersistenceConfig {
 
 
     @Bean
-    public SpringLiquibase liquibase() {
+    public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setChangeLog("classpath:liquibase-changeLog.xml");
-        liquibase.setDataSource(dataSource());
+        liquibase.setDataSource(dataSource);
         return liquibase;
     }
 

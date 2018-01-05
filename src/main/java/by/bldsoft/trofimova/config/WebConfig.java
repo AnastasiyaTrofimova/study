@@ -14,7 +14,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("by.bldsoft.trofimova")
+@ComponentScan("by.bldsoft.trofimova.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override

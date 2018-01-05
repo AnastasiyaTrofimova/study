@@ -22,7 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableJpaRepositories(basePackageClasses = UserRepository.class)
-@ComponentScan("by.bldsoft.trofimova")
+@ComponentScan({"by.bldsoft.trofimova.repository", "by.bldsoft.trofimova.service"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
