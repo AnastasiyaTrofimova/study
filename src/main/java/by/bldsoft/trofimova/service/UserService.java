@@ -9,8 +9,8 @@ public interface UserService {
 
     List<User> findAll();
     User save(User user);
-    User saveAndFlush(Long userId, User user);
+    User update(Long userId, User user);
     User findById(Long userId);
-    void delete(Long userId);
+    User delete(Long userId);
 
 }

@@ -3,7 +3,6 @@ package by.bldsoft.trofimova.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 
-
 import javax.persistence.*;
 import java.util.Set;
 

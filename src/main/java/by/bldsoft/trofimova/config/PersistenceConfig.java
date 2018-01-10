@@ -1,8 +1,6 @@
 package by.bldsoft.trofimova.config;
 
 import by.bldsoft.trofimova.service.UserDetailService;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import liquibase.integration.spring.SpringLiquibase;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +25,6 @@ import java.util.Properties;
 @PropertySource(value="classpath:application.properties")
 public class PersistenceConfig {
 
-
-
     @Value("${hibernate.dialect}")
     private String hibernateDialect;
 
@@ -37,7 +33,6 @@ public class PersistenceConfig {
 
     @Value("${hibernate.format_sql}")
     private String formatSql;
-
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {

@@ -24,14 +24,16 @@ public class UserServiceImpl implements UserService {
 
         List<Message> messages = user.getMessages();
 
-        for (Message message : messages) {
-            message.setUser(user);
+        if (messages != null) {
+           for(Message message : messages) {
+               message.setUser(user);
+           }
         }
 
         return userRepository.save(user);
     }
 
-    public User saveAndFlush(Long userId, User user) {
+    public User update(Long userId, User user) {
         User use = new User();
         use.setUserId(userId);
         use.setUsername(user.getUsername());
@@ -55,8 +57,9 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId);
     }
 
-    public void delete(Long userId) {
+    public User delete(Long userId) {
         userRepository.delete(userId);
+        return null;
     }
 
 }

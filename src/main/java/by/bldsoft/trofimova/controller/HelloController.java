@@ -7,7 +7,6 @@ import by.bldsoft.trofimova.service.MessageService;
 import by.bldsoft.trofimova.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,7 +41,7 @@ public class HelloController {
     @PreAuthorize("hasAuthority('admin')")
     @PutMapping("/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Long userId, @RequestBody User user){
-        userService.saveAndFlush(userId, user);
+        userService.update(userId, user);
         return ResponseEntity.ok().body(user);
     }
 
