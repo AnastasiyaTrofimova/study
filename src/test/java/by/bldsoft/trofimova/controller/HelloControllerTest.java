@@ -5,38 +5,29 @@ import by.bldsoft.trofimova.config.SecurityConfig;
 import by.bldsoft.trofimova.config.WebConfig;
 import by.bldsoft.trofimova.entity.Message;
 import by.bldsoft.trofimova.entity.User;
-import by.bldsoft.trofimova.repository.UserRepository;
 import by.bldsoft.trofimova.service.UserService;
 import config.TestConfig;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.Arrays;
-import java.util.Iterator;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
+import static config.TestConfig.asJsonString;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextHierarchy({
@@ -46,13 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class HelloControllerTest {
 
-    public MockMvc mockMvc;
-
-    @InjectMocks
-    UserService forUserService;
-
-    @Mock
-    UserRepository forUserRepository;
+    private MockMvc mockMvc;
 
     @Autowired
     public WebApplicationContext wc;
@@ -65,11 +50,17 @@ public class HelloControllerTest {
 
         String username = "ivan";
         String surname = "Ivanov";
+        String mess = "hello";
 
         User u = new User();
+        Message m = new Message();
+
+        m.setDescription(mess);
+        m.setUser(u);
 
         u.setUsername(username);
         u.setSurname(surname);
+        u.getMessages().add(m);
 
         User savedUser = userService.save(u);
 
@@ -98,28 +89,42 @@ public class HelloControllerTest {
 
         userService.delete(userId);
         User deleted = userService.findById(userId);
-        Assert.assertNull("null",deleted);
+        Assert.assertNull(deleted);
     }
 
     @Test
     public void save() throws Exception {
 
-        User use = mock(User.class);
-        Message mes = mock(Message.class);
-        when(use.getUsername()).thenReturn("ivan");
-        when(use.getSurname()).thenReturn("Ivanov");
-        when(mes.getDescription()).thenReturn("Hello");
-        String finish = use.getUsername() + use.getSurname() + mes.getDescription();
-        assertEquals("ivanIvanovHello", finish);
+        userService = mock(UserService.class);
+
+            String username = "petr";
+            String surname = "Petrov";
+            String mess = "hello";
+
+            User u = new User();
+            Message m = new Message();
+
+            m.setDescription(mess);
+            m.setUser(u);
+
+            u.setUsername(username);
+            u.setSurname(surname);
+            u.getMessages().add(m);
+
+        when(userService.save(any(User.class))).thenReturn(u);
     }
 
     @Before
-    public void before(){
-       mockMvc = MockMvcBuilders.webAppContextSetup(wc).build();
+    public void setup() {
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(wc)
+                .apply(springSecurity())
+                .build();
     }
 
     @Test
-    public void findAllS() throws Exception{
+    @WithMockUser(username = "ivan", password = "1234")
+    public void findAll() throws Exception {
 
         User first = new User.Builder()
                 .builder("Ivan", "Ivanov")
@@ -133,29 +138,42 @@ public class HelloControllerTest {
         User fourth = new User.Builder()
                 .builder("Vasya", "Vasilev")
                 .build();
+        mockMvc.perform(post("/users")
+                .content(asJsonString(first))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
 
-        userService.save(first);
-        userService.save(second);
-        userService.save(third);
-        userService.save(fourth);
+
+        mockMvc.perform(post("/users")
+                .content(asJsonString(second))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
+
+
+        mockMvc.perform(post("/users")
+                .content(asJsonString(third))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
+
+
+        mockMvc.perform(post("/users")
+                .content(asJsonString(fourth))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println(first);
+        System.out.println(second);
+        System.out.println(third);
+        System.out.println(fourth);
+
 
         mockMvc.perform(get("/users"))
                 .andExpect(status().isOk())
-//                .andExpect(jsonPath("$", hasSize(4)))
-//                .andExpect(jsonPath("$[0].userId", is(1)))
-//                .andExpect(jsonPath("$[0].username", is("Ivan")))
-//                .andExpect(jsonPath("$[0].surname", is("Ivanov")))
-//                .andExpect(jsonPath("$[1].userId", is(2)))
-//                .andExpect(jsonPath("$[1].username", is("Petr")))
-//                .andExpect(jsonPath("$[1].surname", is("Petrov")))
-//                .andExpect(jsonPath("$[2].userId", is(3)))
-//                .andExpect(jsonPath("$[2].username", is("Semen")))
-//                .andExpect(jsonPath("$[2].surname", is("Semenov")))
-//                .andExpect(jsonPath("$[3].userId", is(4)))
-//                .andExpect(jsonPath("$[3].username", is("Vasya")))
-//                .andExpect(jsonPath("$[3].surname", is("Vasilev")))
-                  .andReturn().getResponse().getContentAsString();
-        verify(userService, times(1)).findAll();
-    }
+                .andReturn().getResponse().getContentAsString();
 
+        System.out.println(first);
+        System.out.println(second);
+        System.out.println(third);
+        System.out.println(fourth);
+    }
 }

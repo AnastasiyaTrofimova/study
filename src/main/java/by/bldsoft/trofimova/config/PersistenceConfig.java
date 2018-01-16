@@ -56,7 +56,6 @@ public class PersistenceConfig {
         return transactionManager;
     }
 
-
     @Bean
     public SpringLiquibase liquibase(DataSource dataSource) {
         SpringLiquibase liquibase = new SpringLiquibase();

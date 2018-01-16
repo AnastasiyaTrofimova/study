@@ -29,7 +29,6 @@ public class UserServiceImpl implements UserService {
                message.setUser(user);
            }
         }
-
         return userRepository.save(user);
     }
 

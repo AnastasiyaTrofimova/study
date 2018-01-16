@@ -3,6 +3,7 @@ package by.bldsoft.trofimova.entity;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -43,12 +44,11 @@ public class User implements java.io.Serializable{
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    public List<Message> messages;
+    public List<Message> messages = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleId", insertable = false, updatable = false)
     public Role role;
-
 
     public static class Builder {
 
